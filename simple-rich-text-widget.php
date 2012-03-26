@@ -4,7 +4,7 @@ Plugin Name: Simple Rich Text Widget
 Plugin URI: http://www.blogseye.com
 Description: Widget to display a list of recent search engine query keywords in a link to the wp search function.
 Author: Keith P. Graham
-Version: 1.0
+Version: 1.1
 Author URI: http://www.blogseye.com
 Tested up to: 3.3
 
@@ -12,9 +12,18 @@ Tested up to: 3.3
 
 class widget_kpg_srtw extends WP_Widget {
 
+/*	function x__construct() {
+		$widget_ops = array('classname' => 'widget_kpg_srtw', 'description' => __('Simple Rich Text Editor Widget'));
+		$control_ops = array('width' => 330, 'height' => 310);
+		parent::__construct('widget_kpg_srtw', __('Simple Rich Text Widget'), $widget_ops, $control_ops);
+	}
+*/
    /** constructor */
     function widget_kpg_srtw() {
-        parent::WP_Widget(false, $name = 'Simple Rich Text Widget');	
+ 		//$widget_ops = array('classname' => 'widget_kpg_srtw', 'description' => __('Simple Rich Text Editor Widget'));
+		$control_ops = array('width' => 400, 'height' => 330);
+       parent::WP_Widget(false, $name = 'Simple Rich Text Widget', null, $control_ops);
+       //parent::WP_Widget(false, $name = 'Simple Rich Text Widget');
 		// create the javascript for the thing
 		?>
 <?php
@@ -59,14 +68,15 @@ class widget_kpg_srtw extends WP_Widget {
 		$js = addslashes($dir.'wishywig.js');
 		if (empty($richtext)) $richtext='<p>&nbsp;</p>';
 		?>
-<div style="text-align:left;position:relative;width:100%;height:400px;overflow:auto;background-color:#e8e8e8;border:black thin solid;padding:6px">
+<div style="position:relative;width:400px;">
 
   <label for="<?php echo $this->get_field_id('title'); ?>" style="line-height:25px;display:block;"> Title:
   <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
   </label>
-  <label for="<?php echo $this->get_field_id('richtext'); ?>" style="line-height:25px;display:block;width:340px">
-    <textarea name="<?php echo $this->get_field_name('richtext'); ?>" cols="72" rows="16" class="c<?php echo $this->get_field_id('richtext'); ?>" id="<?php echo $this->get_field_id('richtext'); ?>" style="width:320px;height:300px;"><?php echo $richtext;?></textarea>
+  <label for="<?php echo $this->get_field_id('richtext'); ?>" style="line-height:25px;display:block;width:38px">
+    <textarea name="<?php echo $this->get_field_name('richtext'); ?>" cols="72" rows="16" class="c<?php echo $this->get_field_id('richtext'); ?>" id="<?php echo $this->get_field_id('richtext'); ?>" style="width:400px;height:300px;"><?php echo $richtext;?></textarea>
    </label>
+   <p>&nbsp;</p>
 <script type="text/javascript" src="<?php echo $js; ?>"></script>
 <script type="text/javascript">
      WishyWig.wishywig("<?php echo $this->get_field_id('richtext'); ?>");
@@ -92,7 +102,7 @@ function  widget_kpg_srtw_admin() {
 <h4>The Simple Rich Text Widget is installed and working correctly.</h4><div style="position:relative;float:right;width:35%;background-color:ivory;border:#333333 medium groove;padding:4px;margin-left:4px;">
     <p>This plugin is free and I expect nothing in return. If you would like to support my programming, you can buy my book of short stories.</p>
     <p>Some plugin authors ask for a donation. I ask you to spend a very small amount for something that you will enjoy. eBook versions for the Kindle and other book readers start at 99&cent;. The book is much better than you might think, and it has some very good science fiction writers saying some very nice things. <br/>
-      <a target="_blank" href="http://www.amazon.com/gp/product/1456336584?ie=UTF8&linkCode=as2&camp=1789&creative=390957&creativeASIN=1456336584">Error Message Eyes: A Programmer's Guide to the Digital Soul</a></p>
+      <a target="_blank" href="http://www.blogseye.com/buy-the-book/">Error Message Eyes: A Programmer's Guide to the Digital Soul</a></p>
     <p>A link on your blog to one of my personal sites would also be appreciated.</p>
     <p><a target="_blank" href="http://www.WestNyackHoney.com">West Nyack Honey</a> (I keep bees and sell the honey)<br />
       <a target="_blank" href="http://www.cthreepo.com/blog">Wandering Blog</a> (My personal Blog) <br />
@@ -104,9 +114,6 @@ function  widget_kpg_srtw_admin() {
   </div>
 
 <p>I needed a very simple way to add formatted text to the sidebar on my blog. I used this simple plugin along with an old rich text javascript file that I wrote and wound up with this. It works on my blogs, but the javascript may not work if oyu are using anything but the default admin pages in WordPress.
-</p>
-<p>
-The rich text edit area on the admin screen is wider that the admin page allows so I have put it in a scrollable div. 
 </p>
 <p>
 I have been testing with FireFox 10 and IE8. I hope that other browsers work. In any case, the widget display should be well formed and standard HTML and display pretty much the same in all browsers. This is the first release and I have been chasing down bugs. Please let me know immediately it it doesn't work for you.

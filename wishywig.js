@@ -8,6 +8,14 @@ Use at your own risk. The javascript may not be suitable for other applications 
 
 wishywig.js is a very lightweight way to make a textarea editable and to display a few icons to control it
 
+=== Simple Rich Text Widget ===
+Tags: widget, rich text, contenteditable, gui
+Stable tag: 1.1
+Requires at least: 2.8
+Tested up to: 3.3.1
+Contributors: Keith P. Graham
+Donate link: http://www.blogseye.com/buy-the-book/
+
 
 */
 function WISHYWIG() {
@@ -93,6 +101,7 @@ this.wishywig = function(textareaID) {
 	ww.style.position='relative';
 	ww.style.overflow='visible';
 	ww.style.zIndex=1000;
+	if (document.all) ww.style.zoom=1;
 	wishyww[idx]=ww;
 	// prepend to textarea
 	tid.parentNode.insertBefore(ww,tid);
@@ -120,6 +129,7 @@ this.wishywig = function(textareaID) {
 	ifrdiv.style.border = "thin solid black";
 		// this put it in as a node after the textarea
 	ifrdiv.style.position='relative';
+	if (document.all) ifrdiv.style.zoom=1;
 	tid.parentNode.insertBefore(ifrdiv,tid);
 
 	ifrdiv.style.backgroundColor='ivory';
@@ -189,9 +199,11 @@ function wishyToggleV(idx) {
 			
 			wishySet(idx);
 			setKeyEvent(idx);
+			try {
 			wishyifr[idx].focus();
 			wishyww[idx].focus();
 			wishyifr[idx].focus();
+			} catch (e) {}
 		}
 	//} catch (e) {
 	//    alert("toggle "+this.wishyVis[idx]+" - "+e);
@@ -203,37 +215,37 @@ function wishyToggleV(idx) {
 
 // edit functions
 function wishyMake(idx,command,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyCommand('+idx+',\''+command+'\',\'\');"><img style="margin:-3px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyCommand('+idx+',\''+command+'\',\'\');"><img style="margin:-2;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	return ansa;
 }
 
 function wishyMakeColor(idx,command,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyColor('+idx+',\''+command+'\');"><img style="margin:-3px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyColor('+idx+',\''+command+'\');"><img style="margin:-2;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	// add the drop down color table
 	ansa+=wishyColorTable(idx,'wmkT'+command+idx);
 	return ansa;
 }
 
 function wishyMakeLink(idx,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyLink('+idx+');"><img style="margin:-3px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyLink('+idx+');"><img style="margin:-2;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	return ansa;
 }
 function wishyMakeFont(idx,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyFontFamily('+idx+');"><img style="margin:-4px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyFontFamily('+idx+');"><img style="margin:-4;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	ansa+=wishyFontTable(idx,'wmkF'+idx);
 	return ansa;
 }
 function wishyMakeFontSize(idx,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyFontSize('+idx+');"><img style="margin:-4px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyFontSize('+idx+');"><img style="margin:-3;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	ansa+=wishyFontSizeTable(idx,'wmkFS'+idx);
 	return ansa;
 }
 function wishyMakeHTML(idx,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyHTML('+idx+');"><img style="margin:0px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyHTML('+idx+');"><img style="padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	return ansa;
 }
 function wishyMakeUnHTML(idx,img,alt) {
-var ansa='<a href="#" onclick="return WishyWig.wishyHTML('+idx+');"><img style="margin:0px;padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
+var ansa='<a href="#" onclick="return WishyWig.wishyHTML('+idx+');"><img style="padding:0;" src="'+img+'" alt="'+alt+'" title="'+alt+'" border="0" /></a>';
 	return ansa;
 }
 
@@ -270,8 +282,8 @@ function setKeyEvent(idx) {
 
  	if (typeof iframeDoc.attachEvent != "undefined") { //IE This works
 		iframeDoc.attachEvent('onkeyup', function() { parent.WishyWig.wishyCopy(idx); }); // works for IE
-		wishyifr[idx].attachEvent('onblur', function() { parent.WishyWig.wishyReset(idx); }); // works for IE
-		wishyifr[idx].attachEvent('onfocus', function() { parent.WishyWig.wishyReset(idx); }); // works for IE
+		//wishyifr[idx].attachEvent('onblur', function() { parent.WishyWig.wishyReset(idx); }); // works for IE
+		//wishyifr[idx].attachEvent('onfocus', function() { parent.WishyWig.wishyReset(idx); }); // works for IE
 		iframeDoc.attachEvent('onclick', function() { parent.WishyWig.wishyReset(idx); }); // works for IE
 	} else if (typeof iframeDoc.addEventListener != "undefined") { //FF doesn't work
 		wishyifr[idx].contentWindow.document.addEventListener('keyup', function() { parent.WishyWig.wishyCopy(idx);}, false);
@@ -300,7 +312,7 @@ function localCopy(idx) {
 	}
 	if (copyContent=='') copyContent='<p>&nbsp;</p>';
 	wishytid[idx].value=copyContent;
-	wishySet(idx);
+	//wishySet(idx);
 	return false;
 }
 // commands to do the wishy stuff
